@@ -1,0 +1,57 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class RomanToInteger {
+    public static void main(String[] args) {
+        // Create a HashMap to map Roman numeral characters to their values
+        Map<Character, Integer> romanMap = new HashMap<>();
+        romanMap.put('I', 1);
+        romanMap.put('V', 5);
+        romanMap.put('X', 10);
+        romanMap.put('L', 50);
+        romanMap.put('C', 100);
+        romanMap.put('D', 500);
+        romanMap.put('M', 1000);
+
+        // Create a Scanner to read user input
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a Roman numeral: ");
+        String roman = scanner.nextLine();
+        scanner.close();
+
+        int result = romanToInteger(roman, romanMap);
+
+        if (result != -1) {
+            System.out.println("Integer value: " + result);
+        } else {
+            System.out.println("Invalid Roman numeral input.");
+        }
+    }
+
+    public static int romanToInteger(String s, Map<Character, Integer> romanMap) {
+        int result = 0;
+        int prevValue = 0;
+
+        for (int i = s.length() - 1; i >= 0; i--) {
+            int value = romanMap.getOrDefault(s.charAt(i), 0);
+
+            if (value < prevValue) {
+                result -= value;
+            } else {
+                result += value;
+            }
+
+            prevValue = value;
+        }
+
+        // Check for invalid Roman numerals
+        for (int i = 0; i < s.length(); i++) {
+            if (!romanMap.containsKey(s.charAt(i))) {
+                return -1; // Invalid Roman numeral
+            }
+        }
+
+        return result;
+    }
+}
